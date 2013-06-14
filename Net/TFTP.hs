@@ -7,6 +7,7 @@ module Net.TFTP where
 import Net.Bits
 import Net.Packet
 import Net.PacketParsing
+import qualified Data.ByteString as B
 
 data Packet
   = RRQ Filename Mode
@@ -19,7 +20,7 @@ data Packet
 type Filename = String
 type Mode = String
 type BlockNr = Word16
-type Data = UArray Int Word8 -- could be changed
+type Data = B.ByteString
 newtype ErrorCode = E Word16 deriving (Eq,Show)
 type ErrMsg = String
 

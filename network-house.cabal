@@ -49,7 +49,7 @@ library
     , Net.TCP
     -- , Net.TCP_Client
     -- , Net.Test
-    -- , Net.TFTP
+    , Net.TFTP
     -- , Net.TFTP_Client
     , Net.UDP
     -- , Net.UDP_Client
