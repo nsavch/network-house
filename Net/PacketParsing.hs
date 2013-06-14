@@ -10,6 +10,7 @@ import Control.Monad(liftM,MonadPlus(..))
 import Net.Packet
 import Net.Bits
 import Monad.Util
+import qualified Data.ByteString as B
 
 class Parse a where parse :: PacketParser a
 
@@ -41,7 +42,7 @@ instance MonadPlus PacketParser where
   P p1 `mplus` P p2 = P $ \ p -> p1 p `mplus` p2 p
 
 instance Parse InPacket where parse = therest
-instance Parse (UArray Int Word8) where parse = toChunk # therest
+instance Parse B.ByteString where parse = toChunk # therest
 
 therest =
   P $ \ p ->
@@ -190,7 +191,7 @@ instance Unparse Word32 where
 instance Unparse OutPacket where
   unparse p unp = Unp 0 [] (appendOutPack (flush unp) p) -- !!
 
-flush (Unp cnt bs ps) = addChunk (listArray (0,cnt-1) bs) ps
+flush (Unp cnt bs ps) = addChunk (B.pack bs) ps
 chunk = Unp 0 [] . flush
 
 instance Unparse Chunk where

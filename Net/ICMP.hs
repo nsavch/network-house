@@ -7,19 +7,20 @@ import Net.Bits
 import Net.Utils
 import Net.Packet
 import Net.PacketParsing
+import qualified Data.ByteString as B
 
 data Packet = EchoRequest EchoMsg
 	    | EchoReply EchoMsg
 	    | Other { type_    :: !MessageType,
 		      code     :: !Word8,
 		      chksum   :: !Word16,
-		      content  :: UArray Int Word8
+		      content  :: B.ByteString
 		    }
 	    deriving Show
 
 data EchoMsg = Echo { ident       :: !Word16
                     , seqNum      :: !Word16
-                    , echoData    :: UArray Int Word8
+                    , echoData    :: B.ByteString
                     } deriving Show
 
 instance Parse Packet where
@@ -49,7 +50,7 @@ icmpUnparse (EchoReply m) = echoUnparse True m
 --icmpUnparse (Other ...) =
 
 echoUnparse        :: Bool -> EchoMsg -> OutPacket
-echoUnparse reply m = addChunk (array (0,7) (zip [0..] [a1,a2,a3,a4,b1,b2,b3,b4]))
+echoUnparse reply m = addChunk (B.pack [a1,a2,a3,a4,b1,b2,b3,b4])
                     $ addChunk (echoData m)
                     $ emptyOutPack
   where a1          = if reply then 0 else 8
@@ -57,7 +58,7 @@ echoUnparse reply m = addChunk (array (0,7) (zip [0..] [a1,a2,a3,a4,b1,b2,b3,b4]
         (a3,a4)     = (check .!. 1, check .!. 0)
         (b1,b2)     = (ident m .!. 1, ident m .!. 0)
         (b3,b4)     = (seqNum m .!. 1, seqNum m .!. 0)
-        check       = checksum $ bytes_to_words_big ([a1,a2,0,0,b1,b2,b3,b4] ++ elems (echoData m))
+        check       = checksum $ bytes_to_words_big ([a1,a2,0,0,b1,b2,b3,b4] ++ (B.unpack $ echoData m))
 
 
 

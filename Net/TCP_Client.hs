@@ -13,6 +13,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.List((\\))
 import Data.Word(Word8,Word16,Word32)
+import qualified Data.ByteString as B
 
 import Net.TCP as TCP
 import Net.PortNumber

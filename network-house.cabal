@@ -1,5 +1,5 @@
 name:                network-house
-version:             0.1.0.0
+version:             0.1.0.1
 license:             GPL-2
 license-file:        LICENSE
 author:              The House Authors
@@ -28,7 +28,7 @@ library
       Net.ARP
     , Net.ARP_Protocol
     , Net.Bits
-    , Net.ClientInterface
+    -- , Net.ClientInterface
     , Net.Concurrent
     , Net.DHCP
     , Net.DHCP_Client
@@ -45,14 +45,14 @@ library
     , Net.Packet
     , Net.PacketParsing
     , Net.PortNumber
-    , Net.Servers
+    -- , Net.Servers
     , Net.TCP
-    , Net.TCP_Client
-    , Net.Test
-    , Net.TFTP
-    , Net.TFTP_Client
+    -- , Net.TCP_Client
+    -- , Net.Test
+    -- , Net.TFTP
+    -- , Net.TFTP_Client
     , Net.UDP
-    , Net.UDP_Client
+    -- , Net.UDP_Client
     , Net.Utils
     , Net.Wire
   other-modules:
@@ -62,3 +62,4 @@ library
     , array >= 0.4.0
     , containers >= 0.4.0
     , mtl >= 2.1.0
+    , bytestring >= 0.10.0.2

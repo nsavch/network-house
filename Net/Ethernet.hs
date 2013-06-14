@@ -9,6 +9,7 @@ import Net.Bits
 import Net.Packet
 import Net.PacketParsing as P
 import qualified Net.Interface as Net
+import qualified Data.ByteString as B 
 import Net.Utils(Container(..))
 
 -- Ethernet card drivers should provide the following interface:
@@ -108,7 +109,7 @@ parse p             = let ty          = toEnum (fromIntegral (p `wordAt` 12))
 -- Packets should be paddded elsewhere to satisfy minimum length requirement
 -- (46 bytes of data, 64 bytes including headers and CRC)
 unparse            :: Packet OutPacket -> OutPacket
-unparse p           = addChunk (listArray (0,13) bytes) (content p)
+unparse p           = addChunk (B.pack bytes) (content p)
   where bytes                 = [ d1, d2, d3, d4, d5, d6
                                 , s1, s2, s3, s4, s5, s6
                                 , ty .!. 1, ty .!. 0

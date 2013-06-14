@@ -8,6 +8,7 @@ import Net.Bits
 import Net.Utils
 import Net.Packet
 import Net.PacketParsing
+import qualified Data.ByteString as B
 
 data Addr           = Addr !Word8 !Word8 !Word8 !Word8
                       deriving (Eq,Ord)
@@ -254,7 +255,7 @@ ipv4unparse p       = addChunk realHeader (content p)
         padLen      = 4 * optWords - optLen
         tL          = hL * 4 + outLen (content p)
 
-        realHeader  = listArray (0,hL * 4 - 1) (header c3 c4)
+        realHeader  = B.pack (header c3 c4)
         header c3 c4 =
                      [ a1 , a2 , a3 , a4
                      , b1 , b2 , b3 , b4
